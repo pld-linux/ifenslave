@@ -18,6 +18,8 @@ ifenslave konfiguruje interfejsy sieciowe dla równoleg³ego routingu.
 %description -l pt_BR
 ifenslave configura interfaces de rede para roteamento paralelo.
 
+%prep
+
 %build
 %{__cc} %{rpmcflags} -o %{name} %{SOURCE0}
 
