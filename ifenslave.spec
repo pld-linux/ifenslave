@@ -7,7 +7,6 @@ Release:	4
 License:	GPL
 Group:		Networking
 Source0:	http://www.beowulf.org/software/%{name}.c
-# Source0-md5:	5472fde3f858e9c84dab9821152de55a
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
