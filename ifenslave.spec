@@ -1,10 +1,10 @@
+Summary:	Configure network interfaces for parallel routing
+Summary(pl):	Konfiguracja interfejsów sieciowych dla równoleg³ego routingu
+Summary(pt_BR):	Configura interfaces de rede para roteamento paralelo
 Name:		ifenslave
 Version:	0.07
 Release:	1
 License:	GPL
-Summary:	Configure network interfaces for parallel routing
-Summary(pl):	Konfiguracja interfejsów sieciowych dla rónoleg³ego routingu.
-Summary(pt_BR):	Configura interfaces de rede para roteamento paralelo
 Group:		Networking
 Source0:	http://www.beowulf.org/software/%{name}.c
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -16,9 +16,7 @@ ifenslave configures network interfaces for parallel routing.
 ifenslave konfiguruje interfejsy sieciowe dla równoleg³ego routingu.
 
 %description -l pt_BR
-ifenslave configura interfaces de rede para roteamento paralelo
-
-%prep
+ifenslave configura interfaces de rede para roteamento paralelo.
 
 %build
 %{__cc} %{rpmcflags} -o %{name} %{SOURCE0}
