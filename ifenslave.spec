@@ -3,7 +3,7 @@ Summary(pl):	Konfiguracja interfejsów sieciowych dla równoleg³ego routingu
 Summary(pt_BR):	Configura interfaces de rede para roteamento paralelo
 Name:		ifenslave
 Version:	0.07
-Release:	4
+Release:	5
 License:	GPL
 Group:		Networking
 Source0:	http://www.beowulf.org/software/%{name}.c
