@@ -9,6 +9,8 @@ Group:		Networking
 Source0:	%{name}.c
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_sbindir	/sbin
+
 %description
 ifenslave configures network interfaces for parallel routing.
 
@@ -25,11 +27,11 @@ ifenslave configura interfaces de rede para roteamento paralelo.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -D %{name} $RPM_BUILD_ROOT/sbin/%{name}
+install -D %{name} $RPM_BUILD_ROOT%{_sbindir}/%{name}
 
 %clean
 rm -fr $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) /sbin/ifenslave
+%attr(755,root,root) %{_sbindir}/ifenslave
