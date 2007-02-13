@@ -1,6 +1,6 @@
 Summary:	Configure network interfaces for parallel routing
-Summary(pl.UTF-8):   Konfiguracja interfejsów sieciowych dla równoległego routingu
-Summary(pt_BR.UTF-8):   Configura interfaces de rede para roteamento paralelo
+Summary(pl.UTF-8):	Konfiguracja interfejsów sieciowych dla równoległego routingu
+Summary(pt_BR.UTF-8):	Configura interfaces de rede para roteamento paralelo
 Name:		ifenslave
 Version:	1.1.0
 Release:	1
