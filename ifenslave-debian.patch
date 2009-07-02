@@ -1,0 +1,471 @@
+--- ifenslave-2.6-1.1.0.orig/ifenslave.8
++++ ifenslave-2.6-1.1.0/ifenslave.8
+@@ -0,0 +1,69 @@
++.Dd 2004-04-09
++.Dt IFENSLAVE 8
++.Os "Debian GNU/Linux"
++.\" Manual page created by Guus Sliepen <guus@debian.org>
++.Sh NAME
++.Nm ifenslave
++.Nd Attach and detach slave network devices to a bonding device.
++.Sh SYNOPSIS
++.Nm
++.Op Fl acdfhuvV
++.Op Fl -all-interfaces
++.Op Fl -change-active
++.Op Fl -detach
++.Op Fl -force
++.Op Fl -help
++.Op Fl -usage
++.Op Fl -verbose
++.Op Fl -version
++.Ar master
++.Ar slave
++.No ...
++.Sh DESCRIPTION
++.Nm
++is a tool to attach and detach slave network devices to a bonding device.
++A bonding device will act like a normal Ethernet network device to the kernel,
++but will send out the packets via the slave devices using a simple round-robin scheduler.
++This allows for simple load-balancing,
++identical to "channel bonding" or "trunking" techniques used in switches.
++.Pp
++The kernel must have support for bonding devices for
++.Nm
++to be useful.
++.Sh OPTIONS
++.Bl -tag -width indent
++.It Fl a, -all-interfaces
++Show information about all interfaces.
++.It Fl c, -change-active
++Change active slave.
++.It Fl d, -detach
++Removes slave interfaces from the bonding device.
++.It Fl f, -force
++Force actions to be taken if one of the specified interfaces appears not to belong to an Ethernet device.
++.It Fl h, -help
++Display a help message and exit.
++.It Fl u, -usage
++Show usage information and exit.
++.It Fl v, -verbose
++Print warning and debug messages.
++.It Fl V, -version
++Show version information and exit.
++.El
++If not options are given, the default action will be to enslave interfaces.
++.Sh EXAMPLE
++The following example shows how to setup a bonding device and
++enslave two real Ethernet devices to it:
++.Bd -literal
++# modprobe bonding
++# ifconfig bond0 192.168.0.1 netmask 255.255.0.0
++# ifenslave bond0 eth0 eth1
++.Ed
++.Sh AUTHOR
++.Nm
++was originally written by
++.An Donald Becker Aq becker@cesdis.gsfc.nasa.gov ,
++and has since been updated by various kernel developers.
++.Pp
++This manual page was written by
++.An Guus Sliepen Aq guus@debian.org
++for the Debian GNU/Linux system.
+--- ifenslave-2.6-1.1.0.orig/debian/changelog
++++ ifenslave-2.6-1.1.0/debian/changelog
+@@ -0,0 +1,79 @@
++ifenslave-2.6 (1.1.0-10) unstable; urgency=low
++
++  * Apply patch from Scott Barker forcing explicitly mentioned interfaces to
++    always be enslaved, even if they have been brought up already.
++    Closes: #471769
++
++ -- Guus Sliepen <guus@debian.org>  Sun, 01 Jun 2008 18:11:36 +0200
++
++ifenslave-2.6 (1.1.0-9) unstable; urgency=low
++
++  * Apply patch from Nicolas de Pesloüan allowing multiple arguments to
++    bond_arp_ip_target and writing them properly to sysfs. Closes: #480749
++
++ -- Guus Sliepen <guus@debian.org>  Mon, 19 May 2008 11:29:26 +0200
++
++ifenslave-2.6 (1.1.0-8) unstable; urgency=low
++
++  * Apply patch from Guido Guenther allowing bonding device options normally
++    available via the sysfs interface to be set in /etc/network/interfaces.
++    Closes: #456952
++
++ -- Guus Sliepen <guus@debian.org>  Thu, 20 Dec 2007 14:07:01 +0100
++
++ifenslave-2.6 (1.1.0-7) unstable; urgency=low
++
++  * Move scripts from if-up and if-down to if-pre-up and if-post-down again,
++    but bring the bonding interface up in if-pre-up. Closes: #422566
++
++ -- Guus Sliepen <guus@debian.org>  Tue, 08 May 2007 11:09:26 +0200
++
++ifenslave-2.6 (1.1.0-6) unstable; urgency=low
++
++  * Move scripts from if-pre-up and if-post-down to if-up and if-down.
++
++ -- Guus Sliepen <guus@debian.org>  Mon, 17 Oct 2005 00:48:26 +0200
++
++ifenslave-2.6 (1.1.0-5) unstable; urgency=low
++
++  * Add if-pre-up and if-post-down scripts to enslave and detach interfaces.
++    Closes: #306993.
++
++ -- Guus Sliepen <guus@debian.org>  Fri, 30 Sep 2005 14:33:46 +0200
++
++ifenslave-2.6 (1.1.0-4) unstable; urgency=medium
++
++  * Drop Conflict with kernel-image-2.4 and newer ifenslave-2.4 packages.
++    Closes: #270416
++  * Use alternatives to allow this package to coexist with ifenslave-2.4.
++  * Move ifenslave to /sbin to allow network to be properly configured
++    before mounting /usr over NFS. Closes: #257284
++
++ -- Guus Sliepen <guus@debian.org>  Fri, 17 Sep 2004 14:01:36 +0200
++
++ifenslave-2.6 (1.1.0-3) unstable; urgency=low
++
++  * Conflict, Replace and Provide ifenslave. Closes: #255287
++
++ -- Guus Sliepen <guus@debian.org>  Fri, 25 Jun 2004 21:35:31 +0000
++
++ifenslave-2.6 (1.1.0-2) unstable; urgency=low
++
++  * Change package name to reflect it only works with 2.6.x kernels.
++    See also #247844.
++
++ -- Guus Sliepen <guus@debian.org>  Sun, 16 May 2004 12:26:06 +0200
++
++ifenslave (1.1.0-1) unstable; urgency=low
++
++  * New upstream release (kernel 2.6.5). Closes: #242670
++
++ -- Guus Sliepen <guus@debian.org>  Fri,  9 Apr 2004 14:31:50 +0200
++
++ifenslave (0.07-1) unstable; urgency=low
++
++  * Initial release. Closes: #100760
++  * Merged with several patched versions of the same source.
++  * Created manpage.
++
++ -- Guus Sliepen <guus@sliepen.warande.net>  Wed, 13 Jun 2001 09:31:56 +0200
+--- ifenslave-2.6-1.1.0.orig/debian/ifenslave-2.6.postinst
++++ ifenslave-2.6-1.1.0/debian/ifenslave-2.6.postinst
+@@ -0,0 +1,6 @@
++#!/bin/sh -e
++
++update-alternatives --install /sbin/ifenslave ifenslave /sbin/ifenslave-2.6 260 \
++        --slave /usr/share/man/man8/ifenslave.8.gz ifenslave.8.gz /usr/share/man/man8/ifenslave-2.6.8.gz
++
++#DEBHELPER#
+--- ifenslave-2.6-1.1.0.orig/debian/ifenslave-2.6.prerm
++++ ifenslave-2.6-1.1.0/debian/ifenslave-2.6.prerm
+@@ -0,0 +1,8 @@
++#!/bin/sh -e
++
++if [ "$1" = remove ] || [ "$1" = deconfigure ]; then
++        update-alternatives --remove ifenslave /sbin/ifenslave-2.6
++fi
++
++
++#DEBHELPER#
+--- ifenslave-2.6-1.1.0.orig/debian/README.debian
++++ ifenslave-2.6-1.1.0/debian/README.debian
+@@ -0,0 +1,32 @@
++ifenslave for Debian
++----------------------
++
++The ifenslave program distributed with the Linux kernel sources has not always
++been up to date, and several modified versions have been floating around. The
++latest kernels now contain an updated version though.  The Debian package
++ifenslave will now use the version found in the kernel, without any patches.
++
++You can also enslave interfaces using Debian's /etc/network/interfaces file,
++like this:
++
++iface bond0 inet static
++	address 192.168.48.157
++	netmask 255.255.252.0
++	broadcast 192.168.48.255
++	gateway 192.168.48.1
++	slaves eth0 eth1
++
++The "slaves" option can take a list of network interfaces, the keyword "none"
++(with obvious results) and the keyword "all" (which selects all interfaces with
++"eth" in their name). Additionally you can set bonding options by adding them
++to the interface section:
++
++	bond_mode    active-backup
++	bond_primary eth0
++
++This would run the bonding device in active backup mode with eth0 as primary.
++Supported options are bond_mode, bond_miimon, bond_primary, bond_updelay,
++bond_downdelay, bond_arp_ip_target, bond_arp_interval, bond_xmit_hash_policy
++and bond_lacp_rate.
++
++Guus Sliepen <guus@debian.org>, Fri, 30 Sep 2005 14:33:06 +0200
+--- ifenslave-2.6-1.1.0.orig/debian/pre-up
++++ ifenslave-2.6-1.1.0/debian/pre-up
+@@ -0,0 +1,82 @@
++#!/bin/sh
++
++IFENSLAVE=/sbin/ifenslave
++IFSTATE=/etc/network/run/ifstate
++BOND_PARAMS=/sys/class/net/"$IFACE"/bonding/
++
++if [ ! -x $IFENSLAVE ] ; then
++	exit 0
++fi
++
++
++add_master()
++{
++    if [ ! -r /sys/class/net/bonding_masters ]; then
++        modprobe bonding >/dev/null 2>&1 || true
++    fi
++
++    if ! grep -sq "\\<$IFACE\\>" /sys/class/net/bonding_masters; then
++        echo "+$IFACE" > /sys/class/net/bonding_masters
++    fi
++}
++
++
++case "$IF_SLAVES" in
++	"")
++		exit 0
++		;;
++	none)
++		INTERFACES=""
++		;;
++	all)
++		INTERFACES=`grep eth /proc/net/dev|sed 's/\(\ *\)\(eth[^:]*\)\(.*\)/\2/'`
++		AUTOIF="yes"
++		;;
++	*)
++		INTERFACES="$IF_SLAVES"
++		;;
++esac
++
++
++if [ -n "$INTERFACES" ] ; then
++		add_master
++
++		if [ "$IF_BOND_MODE" ]; then
++			echo "$IF_BOND_MODE" > $BOND_PARAMS/mode
++	        fi
++		if [ "$IF_BOND_MIIMON" ]; then
++			echo "$IF_BOND_MIIMON" > $BOND_PARAMS/miimon
++	        fi
++		if [ "$IF_BOND_UPDELAY" ]; then
++			echo "$IF_BOND_UPDELAY" > $BOND_PARAMS/updelay
++	        fi
++		if [ "$IF_BOND_DOWNDELAY" ]; then
++			echo "$IF_BOND_DOWNDELAY" > $BOND_PARAMS/downdelay
++	        fi
++		if [ "$IF_BOND_ARP_IP_TARGET" ]; then
++			for target in $IF_BOND_ARP_IP_TARGET; do
++				echo "+$target" > $BOND_PARAMS/arp_ip_target
++			done
++	        fi
++		if [ "$IF_BOND_ARP_INTERVAL" ]; then
++			echo "$IF_BOND_ARP_INTERVAL" > $BOND_PARAMS/arp_interval
++	        fi
++		if [ "$IF_BOND_XMIT_HASH_POLICY" ]; then
++			echo "$IF_BOND_XMIT_HASH_POLICY" > $BOND_PARAMS/xmit_hash_policy
++	        fi
++		if [ "$IF_BOND_LACP_RATE" ]; then
++			echo "$IF_BOND_LACP_RATE" > $BOND_PARAMS/lacp_rate
++	        fi
++		ifconfig "$IFACE" up
++		for slave in $INTERFACES ; do
++				if ( [ "$AUTOIF" ] && grep -q "^$slave=" $IFSTATE ) ; then
++					echo "Not enslaving interface $slave since it is already configured"
++				else
++					ifconfig "$slave" down
++					$IFENSLAVE "$IFACE" "$slave"
++				fi
++		done
++		if [ "$IF_BOND_PRIMARY" ]; then
++			echo "$IF_BOND_PRIMARY" > $BOND_PARAMS/primary
++	        fi
++fi
+--- ifenslave-2.6-1.1.0.orig/debian/post-down
++++ ifenslave-2.6-1.1.0/debian/post-down
+@@ -0,0 +1,31 @@
++#!/bin/sh
++
++IFENSLAVE=/sbin/ifenslave
++IFSTATE=/etc/network/run/ifstate
++
++if [ ! -x $IFENSLAVE ] ; then
++	exit 0
++fi
++
++case "$IF_SLAVES" in
++	"")
++		exit 0
++		;;
++	none)
++		INTERFACES=""
++		;;
++	all)
++		INTERFACES=`grep eth /proc/net/dev|sed 's/\(\ *\)\(eth[^:]*\)\(.*\)/\2/'`
++		;;
++	*)
++		INTERFACES="$IF_SLAVES"
++		;;
++esac
++
++if [ -n "$INTERFACES" ] ; then
++		ifconfig "$IFACE" up
++		for slave in $INTERFACES ; do
++			$IFENSLAVE --detach "$IFACE" "$slave"
++		done
++		ifconfig "$IFACE" down
++fi
+--- ifenslave-2.6-1.1.0.orig/debian/compat
++++ ifenslave-2.6-1.1.0/debian/compat
+@@ -0,0 +1 @@
++4
+--- ifenslave-2.6-1.1.0.orig/debian/rules
++++ ifenslave-2.6-1.1.0/debian/rules
+@@ -0,0 +1,79 @@
++#!/usr/bin/make -f
++# Sample debian/rules that uses debhelper.
++# GNU copyright 1997 to 1999 by Joey Hess.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	touch configure-stamp
++
++build: configure-stamp build-stamp
++build-stamp:
++	dh_testdir
++
++	gcc -O2 -g -Wall -o ifenslave ifenslave.c
++
++	touch build-stamp
++
++clean:
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++
++	rm -f ifenslave
++
++	dh_clean
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k
++	dh_installdirs
++
++	mkdir -p $(CURDIR)/debian/ifenslave-2.6/sbin/
++	mkdir -p $(CURDIR)/debian/ifenslave-2.6/usr/share/man/man8/
++	cp ifenslave $(CURDIR)/debian/ifenslave-2.6/sbin/ifenslave-2.6
++	cp ifenslave.8 $(CURDIR)/debian/ifenslave-2.6/usr/share/man/man8/ifenslave-2.6.8
++	install -D debian/pre-up $(CURDIR)/debian/ifenslave-2.6/etc/network/if-pre-up.d/ifenslave
++	install -D debian/post-down $(CURDIR)/debian/ifenslave-2.6/etc/network/if-post-down.d/ifenslave
++
++
++# Build architecture-independent files here.
++binary-indep: build install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: build install
++	dh_testdir
++	dh_testroot
++#	dh_installdebconf	
++	dh_installdocs
++#	dh_installexamples
++#	dh_installmenu
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_installinit
++#	dh_installcron
++	dh_installman
++#	dh_installinfo
++#	dh_undocumented
++	dh_installchangelogs 
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_makeshlibs
++	dh_installdeb
++#	dh_perl
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- ifenslave-2.6-1.1.0.orig/debian/ifenslave-2.6.preinst
++++ ifenslave-2.6-1.1.0/debian/ifenslave-2.6.preinst
+@@ -0,0 +1,11 @@
++#!/bin/sh -e
++
++if [ -f /etc/network/if-up.d/ifenslave -a ! -e /etc/network/if-pre-up.d/ifenslave ]; then
++	mv /etc/network/if-up.d/ifenslave /etc/network/if-pre-up.d/ifenslave
++fi
++
++if [ -f /etc/network/if-down.d/ifenslave -a ! -e /etc/network/if-post-down.d/ifenslave ]; then
++	mv /etc/network/if-down.d/ifenslave /etc/network/if-post-down.d/ifenslave
++fi
++
++#DEBHELPER#
+--- ifenslave-2.6-1.1.0.orig/debian/control
++++ ifenslave-2.6-1.1.0/debian/control
+@@ -0,0 +1,22 @@
++Source: ifenslave-2.6
++Section: net
++Priority: optional
++Maintainer: Guus Sliepen <guus@debian.org>
++Build-Depends: debhelper (>> 4.0.0)
++Standards-Version: 3.7.3
++
++Package: ifenslave-2.6
++Architecture: any
++Depends: ${shlibs:Depends}
++Recommends: net-tools
++Conflicts: ifenslave (<< 2), ifenslave-2.4 (<= 0.07+2.5.15-6)
++Description: Attach and detach slave interfaces to a bonding device
++ This is a tool to attach and detach slave network interfaces to a bonding
++ device. A bonding device will act like a normal Ethernet network device to
++ the kernel, but will send out the packets via the slave devices using a simple
++ round-robin scheduler. This allows for simple load-balancing, identical to
++ "channel bonding" or "trunking" techniques used in switches.
++ .
++ The kernel must have support for bonding devices for ifenslave to be useful.
++ This package supports 2.6.x kernels and the most recent 2.4.x kernels. For
++ older kernels use the ifenslave-2.4 package.
+--- ifenslave-2.6-1.1.0.orig/debian/copyright
++++ ifenslave-2.6-1.1.0/debian/copyright
+@@ -0,0 +1,15 @@
++This package was debianized by Guus Sliepen <guus@debian.org> on
++Wed, 13 Jun 2001 09:31:56 +0200.
++
++There have been several version of ifenslave circulating around in the past.
++For this Debian package, the source was taken from the Documentation directory
++of the Linux 2.6 kernel sources.
++
++    Copyright (c) 1994-1996  Donald Becker <becker@cesdis.gsfc.nasa.gov>
++
++    This program is free software; you can redistribute it
++    and/or modify it under the terms of the GNU General Public
++    License as published by the Free Software Foundation.
++
++On Debian GNU/Linux systems, the complete text of the GNU General Public
++License version 2 can be found in /usr/share/common-licenses/GPL-2.
