@@ -43,7 +43,7 @@ install %{name} $RPM_BUILD_ROOT%{_sbindir}
 install ifenslave.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 %clean
-rm -fr $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
