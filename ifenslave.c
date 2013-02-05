@@ -260,7 +260,7 @@ int main(int argc, char *argv[])
 		case 'V': opt_V++; exclusive++; break;
 
 		case '?':
-			fprintf(stderr, usage_msg);
+			fputs(usage_msg, stderr);
 			res = 2;
 			goto out;
 		}
@@ -268,13 +268,13 @@ int main(int argc, char *argv[])
 
 	/* options check */
 	if (exclusive > 1) {
-		fprintf(stderr, usage_msg);
+		fputs(usage_msg, stderr);
 		res = 2;
 		goto out;
 	}
 
 	if (opt_v || opt_V) {
-		printf(version);
+		fputs(version, stdout);
 		if (opt_V) {
 			res = 0;
 			goto out;
@@ -282,14 +282,14 @@ int main(int argc, char *argv[])
 	}
 
 	if (opt_u) {
-		printf(usage_msg);
+		fputs(usage_msg, stdout);
 		res = 0;
 		goto out;
 	}
 
 	if (opt_h) {
-		printf(usage_msg);
-		printf(help_msg);
+		fputs(usage_msg, stdout);
+		fputs(help_msg, stdout);
 		res = 0;
 		goto out;
 	}
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 			goto out;
 		} else {
 			/* Just show usage */
-			fprintf(stderr, usage_msg);
+			fputs(usage_msg, stderr);
 			res = 2;
 			goto out;
 		}
@@ -320,7 +320,7 @@ int main(int argc, char *argv[])
 	master_ifname = *spp++;
 
 	if (master_ifname == NULL) {
-		fprintf(stderr, usage_msg);
+		fputs(usage_msg, stderr);
 		res = 2;
 		goto out;
 	}
@@ -339,7 +339,7 @@ int main(int argc, char *argv[])
 
 	if (slave_ifname == NULL) {
 		if (opt_d || opt_c) {
-			fprintf(stderr, usage_msg);
+			fputs(usage_msg, stderr);
 			res = 2;
 			goto out;
 		}
